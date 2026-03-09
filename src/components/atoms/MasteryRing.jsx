@@ -1,5 +1,5 @@
 import React from 'react';
-import { getMasteryColor } from '../../engine/mastery';
+import { getMasteryColor } from '../../engine/mastery.js';
 
 export default function MasteryRing({ score = 0, size = 80 }) {
   const r = (size - 10) / 2;

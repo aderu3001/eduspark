@@ -105,15 +105,21 @@ function HomeTab({ user, xp, streak, recentTopics, onStartTopic }) {
 }
 
 // ── Progress Tab ─────────────────────────────────────────────────────────────
+function getAllTopicsForCurriculum(curId) {
+  const grades = Object.keys(SUBJECTS[curId] || {});
+  return grades.flatMap(g =>
+    Object.keys(SUBJECTS[curId][g] || {}).flatMap(s =>
+      (SUBJECTS[curId][g][s] || []).map(st => `${curId}:${g}:${s}:${st}`)
+    )
+  );
+}
+
 function ProgressTab({ masteryMap }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <h3 style={{ fontSize: 16, fontWeight: 600 }}>Your Mastery by Curriculum</h3>
       {CURRICULA.map(cur => {
-        const grades = Object.keys(SUBJECTS[cur.id] || {});
-        const topics = grades.flatMap(g => Object.keys(SUBJECTS[cur.id][g] || {}).flatMap(s =>
-          (SUBJECTS[cur.id][g][s] || []).map(st => `${cur.id}:${g}:${s}:${st}`)
-        ));
+        const topics = getAllTopicsForCurriculum(cur.id);
         const practiced = topics.filter(k => masteryMap[k] != null);
         const avgMastery = practiced.length > 0
           ? Math.round(practiced.reduce((s, k) => s + masteryMap[k], 0) / practiced.length)

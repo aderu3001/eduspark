@@ -8,16 +8,16 @@ import { getMasteryColor } from '../../engine/mastery.js';
 // ── MCQ Option Card ───────────────────────────────────────────────────────────
 function MCQOption({ label, text, selected, correct, wrong, disabled, onClick }) {
   let bg = 'rgba(255,255,255,0.04)';
-  let border = '1px solid rgba(255,255,255,0.1)';
+  let borderColor = 'rgba(255,255,255,0.1)';
   let color = '#e2e8f0';
-  if (correct) { bg = 'rgba(34,197,94,0.12)'; border = '1px solid #22c55e'; color = '#86efac'; }
-  else if (wrong) { bg = 'rgba(239,68,68,0.12)'; border = '1px solid #ef4444'; color = '#fca5a5'; }
-  else if (selected) { bg = 'rgba(99,102,241,0.15)'; border = '1px solid #6366f1'; color = '#a5b4fc'; }
+  if (correct) { bg = 'rgba(34,197,94,0.12)'; borderColor = '#22c55e'; color = '#86efac'; }
+  else if (wrong) { bg = 'rgba(239,68,68,0.12)'; borderColor = '#ef4444'; color = '#fca5a5'; }
+  else if (selected) { bg = 'rgba(99,102,241,0.15)'; borderColor = '#6366f1'; color = '#a5b4fc'; }
 
   return (
     <button onClick={onClick} disabled={disabled} style={{
       width: '100%', textAlign: 'left', padding: '14px 16px',
-      background: bg, border, borderRadius: 10, color,
+      background: bg, border: `1px solid ${borderColor}`, borderRadius: 10, color,
       cursor: disabled ? 'default' : 'pointer', fontSize: 14,
       transition: 'all 0.2s', display: 'flex', alignItems: 'flex-start', gap: 10,
     }}
@@ -25,7 +25,7 @@ function MCQOption({ label, text, selected, correct, wrong, disabled, onClick })
     onMouseLeave={e => { if (!disabled && !selected) e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}
     >
       <span style={{
-        width: 24, height: 24, borderRadius: '50%', border: `2px solid ${border.split(' ')[2]}`,
+        width: 24, height: 24, borderRadius: '50%', border: `2px solid ${borderColor}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: 12, fontWeight: 700, flexShrink: 0, marginTop: 1,
         background: correct ? '#22c55e22' : wrong ? '#ef444422' : selected ? '#6366f122' : 'transparent',
@@ -198,7 +198,6 @@ export default function Practice({ questions, subtopic, mastery = 0, onFinish, o
   if (!q) return null;
 
   const totalQs = questions.length;
-  const progress = ((idx) / totalQs) * 100;
 
   const getIsCorrect = () => {
     if (q.type === 'MCQ') return selected === q.ans;
